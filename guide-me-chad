@@ -1,0 +1,171 @@
+#!/bin/bash
+# ================================ HEADER =====================================
+# Author:       Loic Delineau
+# Date:         15/01/2025
+# Licence:     	GNU-GPLv3 
+# File:        	guide-me-chad 
+# Platform :    Linux shell running the Bourne Again SHell (BASH)
+# Description:	Installs socialchad to your device 
+
+# ======================= GLOBAL VARIABLES ====================================
+black=$(tput setaf 0)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+magenta=$(tput setaf 5)
+cyan=$(tput setaf 6)
+white=$(tput setaf 7)
+
+# ========================== FUNCTIONS ========================================
+# Wait for user confirmation (y) to continue or (n) to quit                     
+prompt() {                                                                      
+                                                                                
+        echo "Continue by entering 'y', stop the script by pressing 'n'"        
+                                                                                
+        # Failsafe for wrong value inputted                                     
+        fail="1"                                                                
+                                                                                
+        while [[ "$fail" == "1" ]]; do                                          
+                                                                                
+                # Read 1 input char                                             
+                echo -n "> "                                                    
+                read -n 1 -r cmd < /dev/tty                                     
+                                                                                
+                # Keyboard input checking                                       
+                if [[ "$cmd" == "y" ]]; then                                    
+                        fail="0"                                                
+                        echo ""                                                 
+                elif [[ "$cmd" == "n" ]]; then                                  
+                        echo ""                                                 
+                        exit                                                    
+                else                                                            
+                        echo -e "\nUnknown key..."                              
+                fi                                                              
+done                                                                            
+}
+
+
+# ======================= USER SYSTEM IDENTIFICATION ==========================
+# Checking if the script is being sourced
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	echo ""
+	echo "You didn't source the script, please restart it with:"
+	echo ". ./install_raspberry"
+	echo ""
+	exit		# exit as script is not sourced
+else
+    echo "Script is being sourced"
+fi
+
+# Checking if you are on x86
+if `uname -a | grep -q x86_64`; then
+	echo "You are running x86 architecture"
+	ISC=x86
+else 
+	echo ""
+	echo "You are not running x86 architecture, this script won't work"
+	echo "Killing script"
+	echo ""
+	return		# return if script is sourced or it kills shell
+fi
+
+# Checking if you are running bare-metal
+if `uname -a | grep -q generic`; then
+	echo "You are running bare metal"
+	BOARD=baremetal
+else 
+	echo ""
+	echo "You are not running bare metal, this script won't work"
+	echo "Killing script"
+	echo ""
+	return		# return if script is sourced or it kills shell
+fi
+
+# This should check the version of the Raspberry Pi
+# cat /sys/firmware/devicetree/base/model
+
+# Checking if you are running Ubuntu
+if `uname -a | grep -q ubuntu`; then
+	echo "You are running Ubuntu"
+	DISTRO=ubuntu
+else 
+	echo ""
+	echo "You didn't install Ubuntu, this script won't work"
+	echo "Killing script"
+	echo ""
+	return
+	return
+fi
+
+# Checking if you are running the right version of Ubuntu
+if `uname -a | grep -q 6.8`; then
+	echo "You are running Ubuntu 24.04 (Kernel version 6.8)"
+	VERSION=24.04
+else 
+	echo ""
+	echo "You are not running Ubuntu 24.04, this script won't work"
+	echo "Killing script"
+	echo ""
+	return		# return if script is sourced or it kills shell
+fi
+
+# Checking if you have an internet connexion
+if ping -c 1 -W 1 8.8.8.8 >/dev/null; then 	# this is google's DNS server
+	echo "You are connected to the internet"
+	WIFI=yes
+else
+	echo ""
+	echo "You are not connected to the internet, this script won't work"
+	echo "Killing script"
+	echo ""
+	return		# return if script is sourced or it kills shell
+fi
+
+# Checking if you are using apt as a package manager
+APT_GET_CMD=$(which apt-get)
+if [[ ! -z $APT_GET_CMD ]]; then
+	echo "You are using apt"
+	pacman="apt"
+else
+	echo ""
+	echo "You are not using apt, this script won't work"
+	echo "Killing script"
+	echo ""
+	return		# return if script is sourced or it kills shell
+fi
+
+echo ""
+
+return 
+
+# =========================== SCRIPT EXECUTION ================================
+# Initial Package Update & Upgrade
+echo "Starting script, it should run for about XX minutes" # time it!!
+prompt
+
+# Waiting to let user read
+echo ""
+sleep 2
+echo "."
+sleep 2
+echo "."
+sleep 2
+echo "."
+sleep 2
+echo ""
+
+
+# ========================== Closing Messages ================================= 
+sudo apt update && sudo apt upgrade -y
+
+echo "$green"
+echo "Script was executed successfully! $white"
+echo ""
+echo "Details of this script are documented here:"
+echo "https://github.com/loicdelineau/socialchad"
+echo ""
+echo "Made,"
+echo "with Love,"
+echo "by Loïc"
+echo ""
