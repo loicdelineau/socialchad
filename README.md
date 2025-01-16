@@ -12,13 +12,13 @@ finest GNU-standard unformatted .txt content.
 
 His job is to query all the largest offenders of brainrot pollution on
 our planet through their APIs and to programmatically dump 
-your initially unformatted content in each of their closed source 
+your unformatted content in each of their
 highly stylized post templates.
 
 Doing so, socialchad offers you a standard format in which you can write
 all your social media posts, a format that respects the key principles 
 behind Richard Stallman's philosophy and most importantly, 
-one that you can write in vim!
+one that can be written in vim!
 
 ### v0.0.1 - Author
 Loïc Delineau - January 2025
