@@ -46,7 +46,7 @@ socialchad -h
 socialchad --help
 ```
 
-This will bring up a helpful reminders of what the chad can you do for you.
+To bring up a list of helpful reminders of what the chad can you do for you.
 
 ### 2.1. Handle recon
 To be effective on social media, you need a common handle across
@@ -60,9 +60,26 @@ All you need to do is to whisper him a handle:
 socialchad handle
 ```
 
+### 2.2. Template 
+The chad will gently remind you what kind of template he expects to use. 
 
-Socialchad will programmatically post on all your social medias simultaneously 
+### 2.3. Chad-social 
+The only social media the chad uses is the terminal, running:
 
+```
+socialchad chadsocial
+```
+
+Will generate a social media post formatted for display in the terminal. 
+Earthlings use this to preview the posts that socialchad will make
+on their various "mainstream" brainrot social platforms. 
+
+### 2.4. AutoPost 
+Socialchad will programmatically post on all your social medias simultaneously.
+
+```
+socialchad autopost
+```
 
 ## 9. How to part ways with chad?
 There is no reason to do this but as a respectable chad, socialchad

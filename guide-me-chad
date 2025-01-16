@@ -144,6 +144,9 @@ return
 echo "Starting script, it should run for about XX minutes" # time it!!
 prompt
 
+# Symlinking executable to /usr/local/bin/
+# or should I copy it? 
+
 # Waiting to let user read
 echo ""
 sleep 2
