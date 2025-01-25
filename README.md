@@ -25,16 +25,21 @@ Loïc Delineau - January 2025
 
 ## 1. How to bring the chad along with you?
 For the chad to help you through life, you will need to give him 
-one-time access to your bashrc, clone this repo and run :
+one-time access to your bashrc, clone this repo and navigate into it:
 
 ```
 git clone https://github.com/loicdelineau/socialchad.git
 cd socialchad
+```
+
+Once you are inside, run :
+
+```
 ./guide-me-chad
 ```
 
-Don't forget, the chad doesn't touch any proprietary OS, it will only
-work on system running a linux distro using apt as its package manager.
+But don't forget, the chad doesn't touch proprietary OS, it will only
+work on system running a [linux distro using apt as its package manager](https://embeddedinventor.com/linux-distros-that-uses-apt-commands-for-package-management/).
 
 ## 2. What can the chad do for you?
 ### 2.0. man page
