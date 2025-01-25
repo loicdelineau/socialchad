@@ -28,6 +28,8 @@ For the chad to help you through life, you will need to give him
 one-time access to your bashrc, clone this repo and run :
 
 ```
+git clone https://github.com/loicdelineau/socialchad.git
+cd socialchad
 ./guide-me-chad
 ```
 
