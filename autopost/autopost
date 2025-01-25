@@ -1,0 +1,219 @@
+#!/bin/bash
+# ================================ HEADER =====================================
+# Author:       Loic Delineau
+# Date:         26/01/2025
+# Licence:     	GNU-GPLv3 
+# File:        	autopost 
+# Platform :    Linux shell running the Bourne Again SHell (BASH)
+# Description:	Posts on all your media -Socialchad 
+
+# ======================= GLOBAL VARIABLES ====================================
+black=$(tput setaf 0)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+magenta=$(tput setaf 5)
+cyan=$(tput setaf 6)
+white=$(tput setaf 7)
+
+# ========================== FUNCTIONS ========================================
+# Wait for user confirmation (y) to continue or (n) to quit                     
+prompt() {                                                                      
+                                                                                
+        echo "Continue by entering 'y', stop the script by pressing 'n'"        
+                                                                                
+        # Failsafe for wrong value inputted                                     
+        fail="1"                                                                
+                                                                                
+        while [[ "$fail" == "1" ]]; do                                          
+                                                                                
+                # Read 1 input char                                             
+                echo -n "> "                                                    
+                read -n 1 -r cmd < /dev/tty                                     
+                                                                                
+                # Keyboard input checking                                       
+                if [[ "$cmd" == "y" ]]; then                                    
+                        fail="0"                                                
+                        echo ""                                                 
+                elif [[ "$cmd" == "n" ]]; then                                  
+                        echo ""                                                 
+                        exit                                                    
+                else                                                            
+                        echo -e "\nUnknown key..."                              
+                fi                                                              
+done                                                                            
+}
+
+## GLOBAL VARIABLES ===========================================================
+debug="true"
+
+## PARSING POST ===============================================================
+# Finding line number for each directive
+LN_TITLE=`cat post.txt | grep "# TITLE" -n | sed 's/:.*//'`
+LN_SUBTITLE=`cat post.txt | grep "# SUBTITLE" -n | sed 's/:.*//'`
+LN_CONTENT=`cat post.txt | grep "# CONTENT" -n | sed 's/:.*//'`
+LN_ASSETS=`cat post.txt | grep "# ASSETS" -n | sed 's/:.*//'`
+
+# Storing multi-line TITLE as single concatenated shell string
+cat post.txt | head -n $((LN_SUBTITLE - 1)) > temp
+LN=`wc -l temp | awk '{print $1}'`
+TITLE=`cat temp | tail -n $((LN - LN_TITLE - 1)) | tr '\n' ' ' | tr -s ' '`
+
+# Storing multi-line SUBTITLE as single concatenated shell string
+cat post.txt | head -n $((LN_CONTENT - 1)) > temp
+LN=`wc -l temp | awk '{print $1}'`
+SUBTITLE=`cat temp | tail -n $((LN - LN_SUBTITLE -1)) | tr '\n' ' ' | tr -s ' '`
+
+# Storing multi-line CONTENT as a complex multi-line shell string
+cat post.txt | head -n $((LN_ASSETS - 1)) > temp
+LN=`wc -l temp | awk '{print $1}'`
+cat temp | tail -n $((LN - LN_CONTENT - 1)) > tempbis
+mv tempbis temp
+CONTENT=$(cat temp |
+	sed 's/^ *//;s/ *$//' |         # Trim leading/trailing spaces
+	sed ':a; /^[[:space:]]*$/!{N; s/\n\([^[:space:]]\)/ \1/; ta}' |
+	sed '/^-/s/ - /\n- /g' | 		# Split bulletpoints
+	sed '/^[0-9]\+\./s/ \([0-9]\+\.\)/\n\1/g') # Split numbered lists
+
+# Storing each path to the assets
+cat post.txt > temp
+LN=`wc -l temp | awk '{print $1}'`
+cat temp | tail -n $((LN - LN_ASSETS - 1)) > tempbis
+mv tempbis temp
+ASSETS=$(cat temp | sed '/^$/d') # Remove empty line
+
+rm temp
+
+# Printing out for debug
+if $debug == "true"; then
+	echo "-----"
+	echo "$TITLE"
+	echo "-----"
+	echo "$SUBTITLE"
+	echo "-----"
+	echo "$CONTENT"
+	echo "-----"
+	echo "$ASSETS"
+	echo "-----"
+fi
+
+
+
+exit
+
+
+# Printing out on chadsocial
+
+
+
+
+#TODO: Rewrite all this to print vertical | as we're publishing the text
+# 	otherwise I can't write past the view window of the terminal
+# 	Also split up all my text into mutiple lines of 72 columns
+
+
+
+
+# Get terminal dimensions
+rows=$(tput lines)       # Number of rows in the terminal
+cols=$(tput cols)        # Number of columns in the terminal
+width=76		 # Width of post
+height=50		 # Height of post
+
+
+# Print Top Horizontal Border
+clear
+msg1="+--------------------------------------------------------------------------+"
+message=$msg1
+message_length=${#message}
+row_position=$(( 5 ))                      # Vertical center
+col_position=$(((cols - message_length) / 2))   # Horizontal center
+tput cup "$row_position" "$col_position"
+echo "$message"
+tput sgr0					# Reset everything
+
+# Print Side Vertical Borders
+msg2="|"
+message=$msg2
+message_length=${#message}
+
+for ((i=1; i<=$height; i++)); do
+	row_position=$(( 5 + $i))              # Vertical center
+	col_position=$(( ((cols - width) / 2) ))   	# Horizontal center
+	tput cup "$row_position" "$col_position"
+	echo -n "$message"
+	col_position=$(( ((cols + width - 2) / 2) ))   	# Horizontal center
+	tput cup "$row_position" "$col_position"
+	echo -n "$message"
+	tput sgr0					# Reset everything
+done
+
+# Print Bottom Horizontal Border
+message=$msg1
+message_length=${#message}
+row_position=$(( (rows / 2 ) + $height + 1))              # Vertical center
+col_position=$(((cols - message_length) / 2))   # Horizontal center
+tput cup "$row_position" "$col_position"
+echo "$message"
+tput sgr0					# Reset everything
+
+echo ""
+echo ""
+
+exit
+
+# Print Title
+message=$TITLE
+message_length=${#message}
+row_position=$((rows / 2))                      # Vertical center
+col_position=$(((cols - message_length) / 2))   # Horizontal center
+
+clear
+
+tput cup "$row_position" "$col_position"
+tput bold					# Bold
+echo "$message"
+tput sgr0					# Reset everything
+
+
+# Print Subtitle
+message=$SUBTITLE
+message_length=${#message}
+row_position=$((rows / 2))                      # Vertical center
+col_position=$(((cols - message_length) / 2))   # Horizontal center
+
+tput cup "$((row_position + 1))" "$col_position"
+echo "$message"
+tput sgr0					# Reset everything
+
+
+# Print Content
+message=$CONTENT
+
+tput cup "$((row_position + 4))" "$col_position"
+echo "$message"
+tput sgr0					# Reset everything
+
+# Make some space
+echo -e "\n\n\n"
+
+
+	
+exit
+
+
+
+
+# ========================== Closing Messages ================================= 
+
+echo "$green"
+echo "Script was executed successfully! $white"
+echo ""
+echo "Details of this script are documented here:"
+echo "https://github.com/loicdelineau/socialchad"
+echo ""
+echo "Made,"
+echo "with Love,"
+echo "by Loïc"
+echo ""
