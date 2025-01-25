@@ -18,7 +18,7 @@ highly stylized post templates.
 Doing so, socialchad offers you a standard format in which you can write
 all your social media posts, a format that respects the key principles 
 behind Richard Stallman's philosophy and most importantly, 
-one that can be written in vim!
+one that is designed to be edited in vim!
 
 ### v0.0.1 - Author
 Loïc Delineau - January 2025
