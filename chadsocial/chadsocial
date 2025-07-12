@@ -1,11 +1,11 @@
 #!/bin/bash
 # ================================ HEADER =====================================
 # Author:       Loic Delineau
-# Date:         26/01/2025
+# Date:         03/07/2025
 # Licence:     	GNU-GPLv3 
-# File:        	autopost 
+# File:        	chadsocial 
 # Platform :    Linux shell running the Bourne Again SHell (BASH)
-# Description:	Posts on all your media -Socialchad 
+# Description:	Formats your post for chadsocial 
 
 # ======================= GLOBAL VARIABLES ====================================
 black=$(tput setaf 0)
@@ -46,7 +46,7 @@ done
 }
 
 ## GLOBAL VARIABLES ===========================================================
-debug="false"	# Prints out state of variables
+debug="true"	# Prints out state of variables
 
 ## PARSING POST ===============================================================
 # Finding line number for each directive
@@ -120,20 +120,21 @@ width=76		 		# Width of post
 height=50		 		# Height of post
 margin=$((($cols - $width) / 2))   	# Side margin
 
-# Few lines of spacing
-for ((i=1; i<=2; i++)); do
+# Few lines of vertical spacing for air
+for ((i=1; i<=1; i++)); do
 	echo ""
 done
 
 ## Print Top Horizontal Border
-msg1="+--------------------------------------------------------------------------+"
+msg1="+-----------------------------------\
+---------------------------------------+"
 message=$msg1
 for ((i=1; i<=$margin; i++)); do
 	echo -n " "			# Column Spacing
 done
 echo "$message"
 
-## Print Side Vertical Borders
+## Print TITLE
 msg2="|"
 message=$msg2
 
@@ -146,6 +147,18 @@ done
 
 echo "$message"
 
+
+echo $TITLE
+echo $SUBTITLE
+echo $CONTENT 
+echo $ASSETS
+
+
+
+
+
+exit
+
 for ((i=1; i<=$height; i++)); do
 	row_position=$(( 5 + $i))              # Vertical center
 	col_position=$(( ((cols - width) / 2) ))   	# Horizontal center
@@ -156,7 +169,6 @@ for ((i=1; i<=$height; i++)); do
 	echo -n "$message"
 	tput sgr0					# Reset everything
 done
-
 
 
 

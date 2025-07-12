@@ -1,0 +1,48 @@
+# TITLE
+===============================================================================
+Short, descriptive and eye-catching title
+(can span multiple lines)
+
+# SUBTITLE
+===============================================================================
+Rarely used on standard social medias, can be omitted
+(can span multiple lines)
+
+# CONTENT
+===============================================================================
+This is the content of your post, most social medias don't use
+titles or subtitles so make sure to start with a strong catchphrase
+to captivate your audience!
+
+Format the content with:
+
+- Bulletpoints for clarity
+- Paragraphs for readability
+- Links for further reading
+
+https://loicdelineau.com
+
+
+
+Make sure not to add unreasonable amounts of space between paragraphs as
+these newlines (\n) will be kept to aerate the text. 
+
+
+
+You can also make numbered lists by using the following format:
+
+1. My first element
+2. My second element
+69. My sexiest element
+
+Make sure to follow the formatting shown here 
+as not respecting this template will most likely cause Socialchad's parser 
+to fail at converting your styles to JSON as required by the web APIs.  
+
+# ASSETS
+===============================================================================
+./bash.png
+./vid.mp4
+
+./test.jpeg
+

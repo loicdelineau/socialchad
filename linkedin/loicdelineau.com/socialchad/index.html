@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Socialchad API Viewer</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    pre  { background: #f4f4f4; padding: 1rem; border-radius: 4px; }
+    button { margin-top: 1rem; padding: 0.5rem 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Socialchad API Viewer</h1>
+
+  <p>
+    <strong>Full URL:</strong><br>
+    <code id="current-url"></code>
+  </p>
+
+  <h2>API Parameters</h2>
+  <pre id="params">Loading…</pre>
+  <button id="copy-btn">Copy "Code" Value</button>
+
+  <script>
+    // 1. Show the full URL
+    const currentUrl = window.location.href;
+    document.getElementById('current-url').textContent = currentUrl;
+
+    // 2. Parse query-string parameters
+    const searchParams = new URLSearchParams(window.location.search);
+    const lines = [];
+    for (const [key, value] of searchParams.entries()) {
+      lines.push(`${key}: ${value}`);
+    }
+    const paramsText = lines.length
+      ? lines.join('\n')
+      : '(no parameters found)';
+    document.getElementById('params').textContent = paramsText;
+
+    // 3. Copy only the “code” parameter’s value
+    document.getElementById('copy-btn').addEventListener('click', () => {
+      const codeValue = searchParams.get('code');
+      if (codeValue) {
+        navigator.clipboard.writeText(codeValue)
+          .then(() => {
+            alert('Copied code value to clipboard:\n' + codeValue);
+          })
+          .catch(err => {
+            console.error('Copy failed:', err);
+            alert('Failed to copy code value.');
+          });
+      } else {
+        alert('No “code” parameter found in the URL.');
+      }
+    });
+  </script>
+
+
+  <p>
+    Please enter the "code" parameter in your terminal
+  </p>
+
+</body>
+</html>
+
