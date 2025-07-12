@@ -1,0 +1,72 @@
+#!/bin/bash
+# ================================ HEADER =====================================
+# Author:       Loic Delineau
+# Date:         01/04/2025
+# Licence:     	GNU-GPLv3 
+# File:        	snippet 
+# Platform :    Linux shell running the Bourne Again SHell (BASH)
+# Description:	Example of a shell script 
+
+# ======================= GLOBAL VARIABLES ====================================
+black=$(tput setaf 0)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+magenta=$(tput setaf 5)
+cyan=$(tput setaf 6)
+white=$(tput setaf 7)
+
+# ======================= USER SYSTEM IDENTIFICATION ==========================
+# Checking if you have an internet connexion
+if ping -c 1 -W 1 8.8.8.8 >/dev/null; then 	# this is google's DNS server
+	echo "You are connected to the internet"
+	WIFI=yes
+else
+	echo ""
+	echo "You are not connected to the internet, this script won't work"
+	echo "Killing script"
+	echo ""
+	return		# return if script is sourced or it kills shell
+fi
+
+# Checking if you are using apt as a package manager                            
+APT_GET_CMD=$(which apt-get)                                                    
+if [[ ! -z $APT_GET_CMD ]]; then                                                
+        echo "You are using apt"                                                
+        pacman="apt"                                                            
+else                                                                            
+        echo ""                                                                 
+        echo "You are not using apt, this script won't work"                    
+        echo "Killing script"                                                   
+        echo ""                                                                 
+        return          # return if script is sourced or it kills shell         
+fi  
+#https://stackoverflow.com/questions/19477682/bash-script-determine-vendor-and-install-system-apt-get-yum-etc
+
+echo ""
+
+# =========================== SCRIPT EXECUTION ================================
+# Opening browser to authorize application
+echo "Opening your browser to authenticate"
+sleep 1
+xdg-open "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=78vhjh7b0rldjt&redirect_uri=https://loicdelineau.com/socialchad&state=AZOI232OIDIIS23Ddjsdi2&scope=w_member_social" > /dev/null 2>&1
+
+# Saving your key to local .env file
+echo ""
+echo "Please paste the code value returned"
+read code
+echo $code > .env
+
+
+# ========================== Closing Messages ================================= 
+echo "$green"
+echo "Script was executed successfully! $white"
+echo ""
+echo "Details of this script are documented here:"
+echo "https://github.com/loicdelineau/socialchad.git"
+echo ""
+echo "Made,"
+echo "with Love,"
+echo "by Loïc"
+echo ""
